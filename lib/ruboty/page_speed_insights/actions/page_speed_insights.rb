@@ -9,8 +9,8 @@ module Ruboty
             desktop
             mobile
           ).each_with_object([]) do |strategy, array|
-            url = "https://www.googleapis.com/pagespeedonline/v2/runPagespeed?url=#{url}&strategy=#{strategy}&key=#{ENV['GOOGLE_TOKEN']}"
-            data = JSON.parse(open(url, &:read))
+            google_url = "https://www.googleapis.com/pagespeedonline/v2/runPagespeed?url=#{url}&strategy=#{strategy}&key=#{ENV['GOOGLE_TOKEN']}"
+            data = JSON.parse(open(google_url, &:read))
 
             fields = [{title: 'Score', value: data['ruleGroups']['SPEED']['score'], short: true }]
             fields.concat(data['pageStats'].map {|key, value| {title: key, value: value, short: true }})
