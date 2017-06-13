@@ -5,6 +5,5 @@ require "ruboty/page_speed_insights/actions/page_speed_insights"
 
 module Ruboty
   module PageSpeedInsights
-    # Your code goes here...
   end
 end
