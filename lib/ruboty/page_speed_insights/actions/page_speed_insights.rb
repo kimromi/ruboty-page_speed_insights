@@ -18,16 +18,12 @@ module Ruboty
           end
 
           # for slack_rtm
-          attachments = results.each_with_object([]) do |(strategy, scores), array|
-            fields = scores.map do |title, score|
-              { title: title, value: score, short: true }
-            end
-
-            array << {
+          attachments = results.map do |strategy, scores|
+            {
               color: strategy == :desktop ? '#64b639' : '#1bbee7',
               author_name: strategy.to_s.upcase,
               author_link: "https://developers.google.com/speed/pagespeed/insights/?hl=en&url=#{url}&tab=#{strategy}",
-              fields: fields,
+              fields: scores.map {|stats, score| { title: stats, value: score, short: true } },
               ts: Time.now.to_i
             }
           end
