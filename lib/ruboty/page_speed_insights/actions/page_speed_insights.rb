@@ -32,7 +32,7 @@ module Ruboty
             }
           end
 
-          message.reply("PageSpeed Insights Result #{results.map{|k, v| "#{k.capitalize}: *#{v[:score]}*"}.join(', ')}", attachments: attachments)
+          message.reply("PageSpeed Insights Result #{results.map{|k, v| "#{k.capitalize}: #{v[:score]}"}.join(', ')}", attachments: attachments)
         end
       end
     end
