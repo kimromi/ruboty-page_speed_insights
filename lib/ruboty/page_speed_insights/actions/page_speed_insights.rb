@@ -5,15 +5,23 @@ module Ruboty
         def call
           url = message.match_data[:url].strip
 
-          attachments = %i(
+          message.reply('Fetching PageSpeed Insights Result...')
+
+          results = %i(
             desktop
             mobile
-          ).each_with_object([]) do |strategy, array|
+          ).each_with_object({}) do |strategy, hash|
             google_url = "https://www.googleapis.com/pagespeedonline/v2/runPagespeed?url=#{url}&strategy=#{strategy}&key=#{ENV['GOOGLE_TOKEN']}"
             data = JSON.parse(open(google_url, &:read))
 
-            fields = [{title: 'Score', value: data['ruleGroups']['SPEED']['score'], short: true }]
-            fields.concat(data['pageStats'].map {|key, value| {title: key, value: value, short: true }})
+            hash[strategy] = { score: data['ruleGroups']['SPEED']['score'] }.merge(data['pageStats'])
+          end
+
+          # for slack_rtm
+          attachments = results.each_with_object([]) do |strategy, scores|
+            fields = scores.map do |title, score|
+              { titile: title.to_s.capitalize, value: score, short: true }
+            end
 
             array << {
               color: strategy == :desktop ? '#64b639' : '#1bbee7',
@@ -24,7 +32,7 @@ module Ruboty
             }
           end
 
-          message.reply('PageSpeed Insights Result', attachments: attachments) # for slack_rtm
+          message.reply("PageSpeed Insights Result #{results.map{|k, v| "#{k.capitalize}: *#{v[:score]}*"}.join(', ')}", attachments: attachments)
         end
       end
     end
