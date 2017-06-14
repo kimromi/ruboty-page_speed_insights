@@ -18,7 +18,7 @@ module Ruboty
           end
 
           # for slack_rtm
-          attachments = results.each_with_object([]) do |strategy, scores|
+          attachments = results.each_with_object([]) do |(strategy, scores), array|
             fields = scores.map do |title, score|
               { titile: title.to_s.capitalize, value: score, short: true }
             end
