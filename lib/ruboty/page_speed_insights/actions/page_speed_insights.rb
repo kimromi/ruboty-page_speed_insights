@@ -4,6 +4,10 @@ module Ruboty
       class PageSpeedInsights < Ruboty::Actions::Base
         def call
           url = message.match_data[:url].strip
+          unless url =~ %r(https?://[\w/:%#\$&\?\(\)~\.=\+\-]+)
+            message.reply("Invalid URL #{url}")
+            return
+          end
 
           message.reply('Fetching PageSpeed Insights Result...')
 
