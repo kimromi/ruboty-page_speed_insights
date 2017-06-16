@@ -1,3 +1,5 @@
+require 'json'
+
 module Ruboty
   module PageSpeedInsights
     module Actions
@@ -16,7 +18,7 @@ module Ruboty
             mobile
           ).each_with_object({}) do |strategy, hash|
             google_url = "https://www.googleapis.com/pagespeedonline/v2/runPagespeed?url=#{url}&strategy=#{strategy}&key=#{ENV['GOOGLE_TOKEN']}"
-            data = JSON.parse(open(google_url, &:read))
+            data = ::JSON.parse(open(google_url, &:read))
 
             hash[strategy] = { score: data['ruleGroups']['SPEED']['score'] }.merge(data['pageStats'])
           end
