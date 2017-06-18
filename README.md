@@ -10,6 +10,12 @@ Add this line to your application's Gemfile:
 gem 'ruboty-page_speed_insights'
 ```
 
+## Environment
+
+#### `GOOGLE_TOKEN`
+
+For use the PageSpeed Insights API(Google API). You can make a token with [this URL](https://console.developers.google.com/projectselector/apis/credentials).
+
 ## Usage
 
 ```
