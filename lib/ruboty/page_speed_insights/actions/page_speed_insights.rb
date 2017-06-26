@@ -8,13 +8,13 @@ module Ruboty
         def call
           unless ENV.key?('GOOGLE_TOKEN')
             message.reply('Please set environment. see https://github.com/kimromi/ruboty-page_speed_insights#environment')
-            return false
+            return
           end
 
           url = message.match_data[:url].strip
           unless url =~ %r(https?://[\w/:%#\$&\?\(\)~\.=\+\-]+)
             message.reply("Invalid URL #{url}")
-            return false
+            return
           end
 
           message.reply('Fetching PageSpeed Insights Result...')
