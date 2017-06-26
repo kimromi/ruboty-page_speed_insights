@@ -1,4 +1,5 @@
 require 'json'
+require 'open-uri'
 
 module Ruboty
   module PageSpeedInsights
