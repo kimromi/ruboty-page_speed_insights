@@ -1,11 +1,21 @@
 require 'json'
+require 'open-uri'
 
 module Ruboty
   module PageSpeedInsights
     module Actions
       class PageSpeedInsights < Ruboty::Actions::Base
         def call
-          return unless check
+          unless ENV.key?('GOOGLE_TOKEN')
+            message.reply('Please set environment. see https://github.com/kimromi/ruboty-page_speed_insights#environment')
+            return false
+          end
+
+          url = message.match_data[:url].strip
+          unless url =~ %r(https?://[\w/:%#\$&\?\(\)~\.=\+\-]+)
+            message.reply("Invalid URL #{url}")
+            return false
+          end
 
           message.reply('Fetching PageSpeed Insights Result...')
 
@@ -31,21 +41,6 @@ module Ruboty
           end
 
           message.reply("PageSpeed Insights Result #{results.map{|k, v| "#{k.capitalize}: #{v[:score]}"}.join(', ')}", attachments: attachments)
-        end
-
-        def check
-          unless ENV.key?('GOOGLE_TOKEN')
-            message.reply('Please set environment. see https://github.com/kimromi/ruboty-page_speed_insights#environment')
-            return false
-          end
-
-          url = message.match_data[:url].strip
-          unless url =~ %r(https?://[\w/:%#\$&\?\(\)~\.=\+\-]+)
-            message.reply("Invalid URL #{url}")
-            return false
-          end
-
-          true
         end
       end
     end
